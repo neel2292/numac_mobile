@@ -10,6 +10,9 @@
       "cordova-plugin-file": {},
       "phonegap-plugin-barcodescanner": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
+      "cordova-plugin-sunmi-inner-printer": {
+        "ANDROID_SUPPORT_V13_VERSION": "27.+"
       }
     },
     "platforms": [
@@ -17,10 +20,11 @@
     ]
   },
   "dependencies": {
-    "cordova-android": "^8.0.0",
+    "cordova-android": "^7.1.4",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-inappbrowser": "^3.1.0",
     "cordova-plugin-statusbar": "^2.4.3",
+    "cordova-plugin-sunmi-inner-printer": "git+https://github.com/tmalbonph/cordova-plugin-sunmi-inner-printer.git",
     "phonegap-plugin-barcodescanner": "^8.1.0"
   }
 }

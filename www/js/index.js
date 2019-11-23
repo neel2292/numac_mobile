@@ -1,10 +1,12 @@
 var app = {
+	SERVER: 'https://numac.my',
     init: function() {
-        if(localStorage.getItem("server")) {
-            app.setup_login();
-        } else {
-			app.show_server();
-        }
+        // if(localStorage.getItem("server")) {
+        //     app.setup_login();
+        // } else {
+		// 	app.show_server();
+        // }
+        app.setup_login();
         app.bind_events();
 		common.handle_external_links();
     },
@@ -15,13 +17,15 @@ var app = {
 		app.bind_change_server();
     },
 	bind_login: function() {
+		var server = this.SERVER;
+
 		$(".btn-login").on("click", function() {
 
 			$me = $(this);
 			$me.prop("disabled", true);
 			$.ajax({
 				method: "POST",
-				url: localStorage.server + "/api/method/login",
+				url: server + "/api/method/login",
 				data: {
 					usr: $("#usr").val(),
 					pwd: $("#pwd").val(),
@@ -53,7 +57,7 @@ var app = {
 			$me.prop("disabled", true);
 			$.ajax({
 				method: "POST",
-				url: localStorage.server + "/api/method/login",
+				url: this.SERVER + "/api/method/login",
 				data: {
 					cmd: "login",
 					otp: $("#otp").val(),
@@ -153,17 +157,24 @@ var app = {
 		localStorage.setItem("recent_servers", JSON.stringify(recent_servers));
 	},
     setup_login: function() {
-		if(localStorage.server && localStorage.session_id) {
-			app.if_session_valid(app.start_desk, app.show_login);
-		} else {
-			app.show_login();
+		// if(localStorage.server && localStorage.session_id) {
+		// 	app.if_session_valid(app.start_desk, app.show_login);
+		// } else {
+		// 	app.show_login();
+		// }
+		if (localStorage.session_id) {
+            app.if_session_valid(app.start_desk, app.show_login);
 		}
+		else {
+            app.show_login();
+		}
+
     },
 	show_login: function() {
 		$(".app").removeClass("hide");
         $(".div-select-server").addClass("hide");
         $(".div-login").removeClass("hide");
-		$(".current-server").text(localStorage.server);
+		$(".current-server").text(this.SERVER);
 	},
 	show_otp: function(data) {
 		$(".div-login").addClass("hide");
@@ -175,7 +186,7 @@ var app = {
 		$.ajax({
 			method: "GET",
 			crossDomain: true,
-			url: localStorage.server + "/api/method/ping",
+			url: this.SERVER + "/api/method/ping",
 		}).success(function(data) {
 			if(data.message === "pong") {
 				if_yes();

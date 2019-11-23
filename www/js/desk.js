@@ -1,4 +1,5 @@
 window.desk = {
+    SERVER: 'https://numac.my',
 	init: function() {
 		//alert("go");
 		desk.start();
@@ -7,9 +8,14 @@ window.desk = {
 	},
 	start: function(version) {
 
-		var url =  localStorage.server + "/api/method/frappe.www.desk.get_desk_assets";
-		if(version && version === "v6") {
-			url = localStorage.server + "/api/method/frappe.templates.pages.desk.get_desk_assets";
+		// var url =  localStorage.server + "/api/method/frappe.www.desk.get_desk_assets";
+		// if(version && version === "v6") {
+		// 	url = localStorage.server + "/api/method/frappe.templates.pages.desk.get_desk_assets";
+		// }
+
+		var url = this.SERVER + "/api/method/frappe.www.desk.get_desk_assets";
+		if (version && version === "v6") {
+            url = this.SERVER + "/api/method/frappe.templates.pages.desk.get_desk_assets";
 		}
 
 		$.ajax({
@@ -51,12 +57,14 @@ window.desk = {
 
 		}).error(function(e) {
 			if(![403, 401].includes(parseInt(e.status))) {
-				alert(`${localStorage.server} failed with status ${e.status}`);
+				// alert(`${localStorage.server} failed with status ${e.status}`);
+                alert(`${this.SERVER} failed with status ${e.status}`);
 			}
 			desk.logout();
 		});
 	},
 	setup_assets: function() {
+		var server = this.SERVER;
 
 		for(key in desk.desk_assets) {
 			var asset = desk.desk_assets[key];
@@ -64,16 +72,16 @@ window.desk = {
 				common.load_script(asset.data);
 			} else {
 				var css = asset.data.replace(/url['"\(]+([^'"\)]+)['"\)]+/g, function(match, p1) {
-					var fixed = (p1.substr(0, 1)==="/") ? (localStorage.server + p1) : (localStorage.server + "/" + p1);
+					var fixed = (p1.substr(0, 1)==="/") ? (server + p1) : (server + "/" + p1);
 				});
 				common.load_style(css);
 			}
 		}
 		// start app
 		// patch urls
-		frappe.request.url = localStorage.server + "/";
-		frappe.base_url = localStorage.server;
-		common.base_url = localStorage.server;
+		frappe.request.url = server + "/";
+		frappe.base_url = server;
+		common.base_url = server;
 
 		// render the desk
 		frappe.start_app();
