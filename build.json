@@ -6,6 +6,13 @@
             "alias": "alias_name",
             "password" : "debug123",
             "keystoreType": ""
+        },
+        "release": {
+            "keystore": "build/release.keystore",
+            "storePassword": "numacpw",
+            "alias": "numac",
+            "password" : "numacpw",
+            "keystoreType": ""
         }
     }
 }
